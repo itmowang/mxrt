@@ -1,0 +1,38 @@
+name: mxrt_mail
+description: 魔王数据邮箱客户端 - 绑定/管理你申请的邮箱账户
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+  # 网络
+  dio: ^5.4.0
+
+  # 状态管理
+  provider: ^6.1.1
+
+  # 本地存储
+  shared_preferences: ^2.2.2
+
+  # URL 跳转 / 浏览器
+  url_launcher: ^6.2.2
+
+  # 剪贴板写入时的轻提示
+  fluttertoast: ^8.2.4
+
+  # Deep link 监听（OAuth 回调）
+  app_links: ^3.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true

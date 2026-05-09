@@ -1,0 +1,39 @@
+# Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Android
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+*.jks
+*.keystore
+
+# Windows
+windows/flutter/ephemeral/
+
+# macOS
+macos/Flutter/ephemeral/
+
+# iOS
+ios/Flutter/ephemeral/
+ios/Pods/
+
+# Misc
+*.log
+.DS_Store
+Thumbs.db
+
+# Pub
+.pub-cache/
+.pub/
+pubspec.lock

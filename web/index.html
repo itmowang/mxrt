@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>魔王邮箱 - 下载客户端</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.container {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.15);
+  text-align: center;
+}
+.logo {
+  width: 72px; height: 72px;
+  background: #1976d2;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.logo svg { width: 40px; height: 40px; fill: #fff; }
+h1 { font-size: 24px; color: #1e293b; margin-bottom: 8px; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+.version { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 24px; }
+.downloads { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px; font-weight: 600;
+  text-decoration: none;
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+.btn-android { background: #4caf50; color: #fff; }
+.btn-windows { background: #1976d2; color: #fff; }
+.btn-web { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+.btn svg { width: 20px; height: 20px; fill: currentColor; }
+.divider { height: 1px; background: #e2e8f0; margin: 24px 0; }
+.features { text-align: left; }
+.features h3 { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+.features ul { list-style: none; }
+.features li { padding: 6px 0; color: #475569; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.features li::before { content: '✓'; color: #4caf50; font-weight: 700; }
+.footer { margin-top: 24px; color: #94a3b8; font-size: 12px; }
+.footer a { color: #64748b; text-decoration: none; }
+@media (max-width: 520px) {
+  .container { padding: 32px 24px; border-radius: 16px; }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+  </div>
+  <h1>魔王邮箱</h1>
+  <p class="subtitle">一键绑定邮箱到手机/电脑，管理你的专属邮箱</p>
+  <span class="version" id="version">v1.0.0</span>
+
+  <div class="downloads">
+    <a href="#" class="btn btn-android" id="btn-apk">
+      <svg viewBox="0 0 24 24"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
+      下载 Android APK
+    </a>
+    <a href="#" class="btn btn-windows" id="btn-win">
+      <svg viewBox="0 0 24 24"><path d="M3 12V6.75l6-1.32v6.48L3 12zm17-9v8.75l-10 .08V5.21L20 3zm-10 9.04l10 .08V21l-10-1.91v-5.05zM3 12.25l6 .09v6.33l-6-1.07V12.25z"/></svg>
+      下载 Windows 客户端
+    </a>
+    <a href="https://mail.loli.free" class="btn btn-web">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      进入网页版
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="features">
+    <h3>功能特性</h3>
+    <ul>
+      <li>一键添加邮箱到手机系统邮件应用</li>
+      <li>支持小米、荣耀、华为、OPPO、vivo 等设备</li>
+      <li>GitHub 账号一键登录</li>
+      <li>邮箱密码管理与重置</li>
+      <li>Windows / Android 双平台</li>
+      <li>自动检查更新</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 魔王数据 · <a href="https://github.com/itmowang/mxrt">GitHub</a></p>
+  </div>
+</div>
+
+<script>
+// 自动从 GitHub Releases 获取最新版本和下载链接
+(async function() {
+  try {
+    var r = await fetch('https://api.github.com/repos/itmowang/mxrt/releases/latest');
+    if (!r.ok) return;
+    var data = await r.json();
+    var tag = data.tag_name || 'v1.0.0';
+    document.getElementById('version').textContent = tag;
+
+    var assets = data.assets || [];
+    for (var i = 0; i < assets.length; i++) {
+      var name = assets[i].name.toLowerCase();
+      var url = assets[i].browser_download_url;
+      if (name.endsWith('.apk')) {
+        document.getElementById('btn-apk').href = url;
+      } else if (name.endsWith('.zip') || name.endsWith('.exe')) {
+        document.getElementById('btn-win').href = url;
+      }
+    }
+
+    // 如果没有找到资源，指向 releases 页面
+    if (document.getElementById('btn-apk').href === '#' || document.getElementById('btn-apk').href.endsWith('#')) {
+      document.getElementById('btn-apk').href = data.html_url || 'https://github.com/itmowang/mxrt/releases';
+    }
+    if (document.getElementById('btn-win').href === '#' || document.getElementById('btn-win').href.endsWith('#')) {
+      document.getElementById('btn-win').href = data.html_url || 'https://github.com/itmowang/mxrt/releases';
+    }
+  } catch(e) {
+    // 回退到 releases 页面
+    document.getElementById('btn-apk').href = 'https://github.com/itmowang/mxrt/releases';
+    document.getElementById('btn-win').href = 'https://github.com/itmowang/mxrt/releases';
+  }
+})();
+</script>
+</body>
+</html>
