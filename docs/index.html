@@ -10,19 +10,15 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  padding: 40px 20px;
 }
 .container {
   background: #fff;
   border-radius: 24px;
   padding: 48px 40px;
-  max-width: 480px;
-  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
   box-shadow: 0 20px 60px rgba(0,0,0,.15);
-  text-align: center;
 }
 .logo {
   width: 72px; height: 72px;
@@ -32,9 +28,12 @@ body {
   margin: 0 auto 20px;
 }
 .logo svg { width: 40px; height: 40px; fill: #fff; }
-h1 { font-size: 24px; color: #1e293b; margin-bottom: 8px; }
-.subtitle { color: #64748b; font-size: 14px; margin-bottom: 32px; }
-.version { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 24px; }
+h1 { font-size: 24px; color: #1e293b; margin-bottom: 8px; text-align: center; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 24px; text-align: center; }
+.version-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.header-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px; }
+
+/* 下载按钮 */
 .downloads { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
 .btn {
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -43,23 +42,57 @@ h1 { font-size: 24px; color: #1e293b; margin-bottom: 8px; }
   font-size: 15px; font-weight: 600;
   text-decoration: none;
   transition: transform .15s, box-shadow .15s;
+  cursor: pointer;
 }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
 .btn-android { background: #4caf50; color: #fff; }
 .btn-windows { background: #1976d2; color: #fff; }
 .btn-web { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+.btn-disabled { opacity: .5; pointer-events: none; }
 .btn svg { width: 20px; height: 20px; fill: currentColor; }
+.btn .size { font-weight: 400; font-size: 12px; opacity: .8; }
+
 .divider { height: 1px; background: #e2e8f0; margin: 24px 0; }
-.features { text-align: left; }
-.features h3 { font-size: 13px; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
-.features ul { list-style: none; }
-.features li { padding: 6px 0; color: #475569; font-size: 14px; display: flex; align-items: center; gap: 8px; }
-.features li::before { content: '✓'; color: #4caf50; font-weight: 700; }
-.footer { margin-top: 24px; color: #94a3b8; font-size: 12px; }
+
+/* 更新历史 */
+.history h2 { font-size: 15px; color: #334155; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.history h2 svg { width: 18px; height: 18px; fill: #64748b; }
+.release-list { list-style: none; }
+.release-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color .2s;
+}
+.release-item:hover { border-color: #1976d2; }
+.release-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.release-tag { font-weight: 700; color: #1e293b; font-size: 15px; }
+.release-date { font-size: 12px; color: #94a3b8; }
+.release-body { font-size: 13px; color: #475569; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.release-assets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.asset-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background .2s;
+}
+.asset-link:hover { background: #e0f2fe; }
+.asset-link svg { width: 14px; height: 14px; fill: currentColor; }
+
+.loading { text-align: center; color: #94a3b8; padding: 20px; font-size: 13px; }
+.footer { margin-top: 24px; color: #94a3b8; font-size: 12px; text-align: center; }
 .footer a { color: #64748b; text-decoration: none; }
+
 @media (max-width: 520px) {
-  .container { padding: 32px 24px; border-radius: 16px; }
+  .container { padding: 32px 20px; border-radius: 16px; }
   h1 { font-size: 20px; }
+  body { padding: 20px 12px; }
 }
 </style>
 </head>
@@ -70,74 +103,152 @@ h1 { font-size: 24px; color: #1e293b; margin-bottom: 8px; }
   </div>
   <h1>魔王邮箱</h1>
   <p class="subtitle">一键绑定邮箱到手机/电脑，管理你的专属邮箱</p>
-  <span class="version" id="version">v1.0.0</span>
+
+  <div class="header-row">
+    <span class="version-badge" id="version">加载中...</span>
+  </div>
 
   <div class="downloads">
-    <a href="#" class="btn btn-android" id="btn-apk">
+    <a href="#" class="btn btn-android btn-disabled" id="btn-apk">
       <svg viewBox="0 0 24 24"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
-      下载 Android APK
+      <span>下载 Android APK</span>
+      <span class="size" id="apk-size"></span>
     </a>
-    <a href="#" class="btn btn-windows" id="btn-win">
+    <a href="#" class="btn btn-windows btn-disabled" id="btn-win">
       <svg viewBox="0 0 24 24"><path d="M3 12V6.75l6-1.32v6.48L3 12zm17-9v8.75l-10 .08V5.21L20 3zm-10 9.04l10 .08V21l-10-1.91v-5.05zM3 12.25l6 .09v6.33l-6-1.07V12.25z"/></svg>
-      下载 Windows 客户端
+      <span>下载 Windows 客户端</span>
+      <span class="size" id="win-size"></span>
     </a>
     <a href="https://mail.loli.free" class="btn btn-web">
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-      进入网页版
+      <span>进入网页版</span>
     </a>
   </div>
 
   <div class="divider"></div>
 
-  <div class="features">
-    <h3>功能特性</h3>
-    <ul>
-      <li>一键添加邮箱到手机系统邮件应用</li>
-      <li>支持小米、荣耀、华为、OPPO、vivo 等设备</li>
-      <li>GitHub 账号一键登录</li>
-      <li>邮箱密码管理与重置</li>
-      <li>Windows / Android 双平台</li>
-      <li>自动检查更新</li>
+  <div class="history">
+    <h2>
+      <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+      更新历史
+    </h2>
+    <ul class="release-list" id="release-list">
+      <li class="loading">正在加载...</li>
     </ul>
   </div>
 
   <div class="footer">
-    <p>© 2026 魔王数据 · <a href="https://github.com/itmowang/mxrt">GitHub</a></p>
+    <p>© 2026 魔王数据 · <a href="https://github.com/itmowang/mxrt">GitHub</a> · <a href="https://github.com/itmowang/mxrt/releases">所有版本</a></p>
   </div>
 </div>
 
 <script>
-// 自动从 GitHub Releases 获取最新版本和下载链接
+var REPO = 'itmowang/mxrt';
+var API = 'https://api.github.com/repos/' + REPO + '/releases';
+
+function formatSize(bytes) {
+  if (!bytes) return '';
+  if (bytes > 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+  return (bytes / 1024).toFixed(0) + ' KB';
+}
+
+function formatDate(str) {
+  var d = new Date(str);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function getAssetIcon(name) {
+  if (name.endsWith('.apk')) return '📱';
+  if (name.endsWith('.zip') || name.endsWith('.exe')) return '💻';
+  return '📦';
+}
+
 (async function() {
   try {
-    var r = await fetch('https://api.github.com/repos/itmowang/mxrt/releases/latest');
-    if (!r.ok) return;
-    var data = await r.json();
-    var tag = data.tag_name || 'v1.0.0';
-    document.getElementById('version').textContent = tag;
+    var r = await fetch(API);
+    if (!r.ok) throw new Error('API error');
+    var releases = await r.json();
+    if (!releases.length) {
+      document.getElementById('release-list').innerHTML = '<li class="loading">暂无发布版本</li>';
+      return;
+    }
 
-    var assets = data.assets || [];
+    // 最新版本信息
+    var latest = releases[0];
+    document.getElementById('version').textContent = latest.tag_name || 'v1.0.0';
+
+    // 设置顶部下载按钮（从最新版本的 assets 里找）
+    var assets = latest.assets || [];
     for (var i = 0; i < assets.length; i++) {
       var name = assets[i].name.toLowerCase();
       var url = assets[i].browser_download_url;
+      var size = assets[i].size;
       if (name.endsWith('.apk')) {
-        document.getElementById('btn-apk').href = url;
-      } else if (name.endsWith('.zip') || name.endsWith('.exe')) {
-        document.getElementById('btn-win').href = url;
+        var btnApk = document.getElementById('btn-apk');
+        btnApk.href = url;
+        btnApk.classList.remove('btn-disabled');
+        document.getElementById('apk-size').textContent = formatSize(size);
+      }
+      if (name.endsWith('.zip') || name.endsWith('.exe')) {
+        var btnWin = document.getElementById('btn-win');
+        btnWin.href = url;
+        btnWin.classList.remove('btn-disabled');
+        document.getElementById('win-size').textContent = formatSize(size);
       }
     }
 
-    // 如果没有找到资源，指向 releases 页面
-    if (document.getElementById('btn-apk').href === '#' || document.getElementById('btn-apk').href.endsWith('#')) {
-      document.getElementById('btn-apk').href = data.html_url || 'https://github.com/itmowang/mxrt/releases';
+    // 如果没找到资源，链接到 releases 页面
+    var btnApk2 = document.getElementById('btn-apk');
+    var btnWin2 = document.getElementById('btn-win');
+    if (btnApk2.href.endsWith('#')) {
+      btnApk2.href = latest.html_url;
+      btnApk2.classList.remove('btn-disabled');
     }
-    if (document.getElementById('btn-win').href === '#' || document.getElementById('btn-win').href.endsWith('#')) {
-      document.getElementById('btn-win').href = data.html_url || 'https://github.com/itmowang/mxrt/releases';
+    if (btnWin2.href.endsWith('#')) {
+      btnWin2.href = latest.html_url;
+      btnWin2.classList.remove('btn-disabled');
     }
+
+    // 渲染更新历史
+    var html = '';
+    for (var j = 0; j < releases.length; j++) {
+      var rel = releases[j];
+      var body = (rel.body || '').trim();
+      // 简单 markdown 转换
+      body = body.replace(/^### (.+)$/gm, '<strong>$1</strong>');
+      body = body.replace(/^## (.+)$/gm, '<strong>$1</strong>');
+      body = body.replace(/^- (.+)$/gm, '• $1');
+
+      var assetsHtml = '';
+      if (rel.assets && rel.assets.length) {
+        assetsHtml = '<div class="release-assets">';
+        for (var k = 0; k < rel.assets.length; k++) {
+          var a = rel.assets[k];
+          assetsHtml += '<a class="asset-link" href="' + a.browser_download_url + '" title="' + formatSize(a.size) + '">';
+          assetsHtml += '<svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>';
+          assetsHtml += getAssetIcon(a.name) + ' ' + a.name;
+          assetsHtml += '</a>';
+        }
+        assetsHtml += '</div>';
+      }
+
+      html += '<li class="release-item">';
+      html += '<div class="release-header">';
+      html += '<span class="release-tag">' + (rel.tag_name || '') + '</span>';
+      html += '<span class="release-date">' + formatDate(rel.published_at || rel.created_at) + '</span>';
+      html += '</div>';
+      if (body) html += '<div class="release-body">' + body + '</div>';
+      html += assetsHtml;
+      html += '</li>';
+    }
+    document.getElementById('release-list').innerHTML = html;
+
   } catch(e) {
-    // 回退到 releases 页面
-    document.getElementById('btn-apk').href = 'https://github.com/itmowang/mxrt/releases';
-    document.getElementById('btn-win').href = 'https://github.com/itmowang/mxrt/releases';
+    document.getElementById('release-list').innerHTML = '<li class="loading">加载失败，<a href="https://github.com/' + REPO + '/releases">前往 GitHub 查看</a></li>';
+    document.getElementById('btn-apk').href = 'https://github.com/' + REPO + '/releases';
+    document.getElementById('btn-apk').classList.remove('btn-disabled');
+    document.getElementById('btn-win').href = 'https://github.com/' + REPO + '/releases';
+    document.getElementById('btn-win').classList.remove('btn-disabled');
   }
 })();
 </script>

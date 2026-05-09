@@ -37,3 +37,4 @@ Thumbs.db
 .pub-cache/
 .pub/
 pubspec.lock
+*.zip
