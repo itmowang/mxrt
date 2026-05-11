@@ -137,7 +137,12 @@ class _EmailApplyPageState extends State<EmailApplyPage> {
                     DropdownMenuItem(value: 100, child: Text('100 MB')),
                     DropdownMenuItem(value: 200, child: Text('200 MB')),
                     DropdownMenuItem(value: 500, child: Text('500 MB')),
-                    DropdownMenuItem(value: 1024, child: Text('1 GB')),
+                    DropdownMenuItem(
+                      value: 1024,
+                      enabled: false,
+                      child: Text('1 GB（暂无库存）',
+                          style: TextStyle(color: Colors.grey)),
+                    ),
                   ],
                   onChanged: (v) => setState(() => _quota = v ?? 200),
                 ),

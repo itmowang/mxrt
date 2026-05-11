@@ -1,41 +1,35 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'api_client.dart';
+
 /// 应用热更新检查。
 ///
-/// 通过 GitHub Releases API 获取最新版本号，
+/// 通过后端 `/api/mobile/version` 接口获取最新版本号（后端代理 GitHub API，避免国内被墙），
 /// 与当前版本比较，如果有新版则弹窗提示用户下载。
 class AppUpdater {
   static const _currentVersion = '1.0.0';
-  static const _owner = 'itmowang';
-  static const _repo = 'mxrt';
-  static const _releasesApi =
-      'https://api.github.com/repos/$_owner/$_repo/releases/latest';
 
   /// 检查更新，如果有新版弹窗提示。
   static Future<void> checkForUpdate(BuildContext context) async {
     try {
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-      ));
-      final resp = await dio.get(_releasesApi);
+      final api = await ApiClient.instance();
+      final resp = await api.dio.get('/api/mobile/version');
       if (resp.statusCode != 200) return;
 
       final data = resp.data as Map<String, dynamic>;
-      final tagName = (data['tag_name'] ?? '').toString().replaceAll('v', '');
-      if (tagName.isEmpty) return;
+      final version = (data['version'] ?? '').toString();
+      if (version.isEmpty) return;
 
-      if (_isNewer(tagName, _currentVersion)) {
+      if (_isNewer(version, _currentVersion)) {
         if (!context.mounted) return;
-        final body = (data['body'] ?? '').toString();
-        final htmlUrl = (data['html_url'] ?? '').toString();
+        final changelog = (data['changelog'] ?? '').toString();
+        final htmlUrl = (data['htmlUrl'] ?? '').toString();
+        final assets = (data['assets'] as List?) ?? [];
 
         // 找到对应平台的下载链接
-        final assets = (data['assets'] as List?) ?? [];
         String? downloadUrl;
         if (Platform.isWindows) {
           downloadUrl = _findAsset(assets, '.zip') ?? _findAsset(assets, '.exe');
@@ -45,8 +39,8 @@ class AppUpdater {
 
         _showUpdateDialog(
           context,
-          newVersion: tagName,
-          changelog: body,
+          newVersion: version,
+          changelog: changelog,
           downloadUrl: downloadUrl ?? htmlUrl,
         );
       }
@@ -57,9 +51,9 @@ class AppUpdater {
 
   static String? _findAsset(List assets, String ext) {
     for (final a in assets) {
-      final name = (a['name'] ?? '').toString().toLowerCase();
+      final name = ((a as Map)['name'] ?? '').toString().toLowerCase();
       if (name.endsWith(ext)) {
-        return (a['browser_download_url'] ?? '').toString();
+        return (a['url'] ?? '').toString();
       }
     }
     return null;
