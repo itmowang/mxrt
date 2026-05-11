@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../core/oauth_helper.dart';
 import '../state/auth_provider.dart';
 import 'home_page.dart';
+import 'qr_scan_page.dart';
 import 'register_page.dart';
 import 'settings_page.dart';
 
@@ -168,6 +169,17 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: _loading ? null : _githubLogin,
                   icon: const Icon(Icons.code, size: 18),
                   label: const Text('使用 GitHub 登录'),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: _loading
+                      ? null
+                      : () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (_) => const QrScanPage()),
+                          ),
+                  icon: const Icon(Icons.qr_code_scanner, size: 18),
+                  label: const Text('扫码登录'),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
