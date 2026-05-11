@@ -22,7 +22,7 @@ class MainActivity : FlutterActivity() {
                     val smtpHost = call.argument<String>("smtpHost").orEmpty()
                     val smtpPort = call.argument<Int>("smtpPort") ?: 465
                     val displayName = call.argument<String>("displayName").orEmpty()
-                    val ok = MailSetupBridge.addImapAccount(
+                    val outcome = MailSetupBridge.addImapAccount(
                         this,
                         email,
                         password,
@@ -32,7 +32,7 @@ class MainActivity : FlutterActivity() {
                         smtpPort,
                         displayName,
                     )
-                    result.success(ok)
+                    result.success(outcome)
                 }
                 else -> result.notImplemented()
             }

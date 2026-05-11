@@ -49,10 +49,26 @@ class _MailboxDetailPageState extends State<MailboxDetailPage> {
       );
       return;
     }
-    final result = await MailSetup.addToSystem(fresh);
+    final result = await MailSetup.addToSystem(context, fresh);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(result.message)),
+    // 显示详细结果对话框
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        icon: Icon(
+          result.success ? Icons.check_circle : Icons.error_outline,
+          color: result.success ? Colors.green : Colors.red,
+          size: 36,
+        ),
+        title: Text(result.success ? '操作成功' : '操作失败'),
+        content: Text(result.message),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('知道了'),
+          ),
+        ],
+      ),
     );
   }
 
