@@ -32,28 +32,35 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    // 先用缓存快速渲染
-    if (cached != null) _user = AppUser.fromJson(cached);
 
+    // 有 token + 有缓存用户 → 立即标记为已登录（不等网络）
+    if (cached != null) {
+      _user = AppUser.fromJson(cached);
+      _status = AuthStatus.loggedIn;
+      notifyListeners();
+    }
+
+    // 后台静默验证 token 是否还有效
     try {
       final me = await api.me();
       _user = AppUser.fromJson(me);
       await storage.setUser(me);
-      _status = AuthStatus.loggedIn;
+      if (_status != AuthStatus.loggedIn) {
+        _status = AuthStatus.loggedIn;
+        notifyListeners();
+      }
     } on DioException catch (e) {
-      // token 失效 / 网络失败
       if (e.response?.statusCode == 401) {
+        // token 确实过期了，清掉
         await storage.clearAuth();
         _user = null;
         _status = AuthStatus.loggedOut;
-      } else {
-        // 网络错误也保持已登录状态，等进入页面后用户手动刷新
-        _status = _user != null ? AuthStatus.loggedIn : AuthStatus.loggedOut;
+        notifyListeners();
       }
+      // 其他网络错误不处理，保持已登录状态
     } catch (_) {
-      _status = _user != null ? AuthStatus.loggedIn : AuthStatus.loggedOut;
+      // 保持当前状态
     }
-    notifyListeners();
   }
 
   Future<bool> login(String email, String password) async {
