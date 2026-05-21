@@ -10,7 +10,7 @@ import 'api_client.dart';
 /// 通过后端 `/api/mobile/version` 接口获取最新版本号（后端代理 GitHub API，避免国内被墙），
 /// 与当前版本比较，如果有新版则弹窗提示用户下载。
 class AppUpdater {
-  static const _currentVersion = '1.0.5';
+  static const _currentVersion = '1.0.6';
 
   /// 检查更新，如果有新版弹窗提示。
   static Future<void> checkForUpdate(BuildContext context) async {
