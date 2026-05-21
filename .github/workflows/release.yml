@@ -24,6 +24,11 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Remove China mirrors for CI
+        run: |
+          sed -i "/maven.*aliyun/d" android/build.gradle
+          sed -i "/maven.*aliyun/d" android/settings.gradle
+
       - name: Decode keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.jks
 
