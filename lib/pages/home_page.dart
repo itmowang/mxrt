@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../core/updater.dart';
 import '../models/mailbox.dart';
@@ -125,6 +128,8 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+        const SizedBox(height: 16),
+        const _QqGroupCard(),
       ],
     );
   }
@@ -327,6 +332,75 @@ class _ErrorState extends StatelessWidget {
           child: FilledButton(onPressed: onRetry, child: const Text('重试')),
         ),
       ],
+    );
+  }
+}
+
+class _QqGroupCard extends StatelessWidget {
+  const _QqGroupCard();
+
+  static const _qqGroup = '339803174';
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: cs.primary.withOpacity(.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.groups, color: cs.primary),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '加入 QQ 交流群',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '群号: $_qqGroup',
+                    style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Clipboard.setData(const ClipboardData(text: _qqGroup));
+                Fluttertoast.showToast(msg: '群号已复制');
+              },
+              child: const Text('复制'),
+            ),
+            const SizedBox(width: 4),
+            FilledButton(
+              onPressed: () {
+                final uri = Uri.parse(
+                  'mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D%26group_code%3D$_qqGroup',
+                );
+                launchUrl(uri, mode: LaunchMode.externalApplication).catchError((_) {
+                  // QQ 未安装则打开网页
+                  launchUrl(
+                    Uri.parse('https://qm.qq.com/cgi-bin/qm/qr?k=&group_code=$_qqGroup'),
+                    mode: LaunchMode.externalApplication,
+                  );
+                });
+              },
+              child: const Text('加群'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
